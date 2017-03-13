@@ -12,10 +12,10 @@ socket.on('disconnect', function (){
 
 //listen to custom event newMessage.
 socket.on('newMessage', function (message){
-  console.log('newMessage.', message);
+  var formattedTime = moment(message.createdAt).format('h:mm a');
 
   //display incoming messages.
-  var li = $('<li></li>').text(`${message.from}: ${message.text}`);
+  var li = $('<li></li>').text(`${message.from} @ ${formattedTime} : ${message.text}`);
   $('#messages').append(li);
 });
 
