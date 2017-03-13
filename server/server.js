@@ -37,6 +37,13 @@ io.on('connection', (socket) => {
 
   });
 
+  //Listen to location event.
+  socket.on('createLocationMessage', (coords) => {
+    //emit location to ALL connnections
+    io.emit('newMessage', generateMessage('Admin', `${coords.latitude}, ${coords.longitude}`));
+  });
+
+  //Listen to disconnect event.
   socket.on('disconnect', () => {
     console.log('User was disconnected.');
   });
