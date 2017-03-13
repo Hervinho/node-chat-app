@@ -25,11 +25,15 @@ io.on('connection', (socket) => {
   socket.broadcast.emit('newMessage', generateMessage('ADMIN', 'New User joined chat'));
 
   //Listen to custom event from client to server.
-  socket.on('createMessage', (message) => {
+  //P.S. adding a callback for event acknowledgement
+  socket.on('createMessage', (message, callback) => {
     console.log('createMessage', message);
 
     //emit this event to ALL connnections
     io.emit('newMessage', generateMessage(message.from, message.text));
+
+    //send event acknowledgement
+    callback('From server: Message received!!!');
 
   });
 

@@ -14,3 +14,11 @@ socket.on('disconnect', function (){
 socket.on('newMessage', function (message){
   console.log('newMessage.', message);
 });
+
+//emit custom event createMessage
+socket.emit('createMessage', {
+  from: 'Hervinho',
+  text: 'Wassup'
+}, function (data){
+  console.log(data);
+});
