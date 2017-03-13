@@ -13,12 +13,22 @@ socket.on('disconnect', function (){
 //listen to custom event newMessage.
 socket.on('newMessage', function (message){
   console.log('newMessage.', message);
+
+  //display incoming messages.
+  var li = $('<li></li>').text(`${message.from}: ${message.text}`);
+  $('#messages').append(li);
 });
 
-//emit custom event createMessage
-socket.emit('createMessage', {
-  from: 'Hervinho',
-  text: 'Wassup'
-}, function (data){
-  console.log(data);
+//Listener for message form.
+$('#messageForm').on('submit', function(e){
+  //prevent default page refresh on submit.
+  e.preventDefault();
+
+  //emit custom event createMessage. Here user posts in the chat app.
+  socket.emit('createMessage', {
+    from: 'Browser',
+    text: $('[name=message]').val()
+  }, function (data){
+    console.log(data);
+  });
 });
