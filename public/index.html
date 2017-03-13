@@ -9,18 +9,6 @@
     <!-- will use this to initiate a connection request -->
     <script src="/socket.io/socket.io.js"></script>
 
-    <script>
-      var socket = io();
-
-      //listen to on connect event.
-      socket.on('connect', () => {
-        console.log('Connected to server.');
-      });
-
-      //listen to on disconnect event.
-      socket.on('disconnect', () => {
-        console.log('Diconnected from server.');
-      });
-    </script>
+    <script src="/js/index.js"></script>
   <body>
 </html>
