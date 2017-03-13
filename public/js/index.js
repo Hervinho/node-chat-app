@@ -23,30 +23,13 @@ socket.on('newMessage', function (message){
 $('#messageForm').on('submit', function(e){
   //prevent default page refresh on submit.
   e.preventDefault();
+  var messageTextBox = $('[name=message]');
 
   //emit custom event createMessage. Here user posts in the chat app.
   socket.emit('createMessage', {
     from: 'Browser',
-    text: $('[name=message]').val()
+    text: messageTextBox.val()
   }, function (data){
-    console.log(data);
-  });
-});
-
-var locationButton = $("sendLocation");
-locationButton.on('click', function(){
-  //check if user has geolocation API in Browser
-  if(!navigator.geolocation){
-    return alert('Your browser does not support geolocation!');
-  }
-
-  navigator.geolocation.getCurrentPosition(function(position){
-    //emit user location.
-    socket.emit('createLocationMessage', {
-      latitude: position.coords.latitude,
-      longitude: position.coords.longitude
-    });
-  }, function(){
-    alert('Unable to get current location.');
+      messageTextBox.val('');
   });
 });
