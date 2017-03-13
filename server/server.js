@@ -27,8 +27,6 @@ io.on('connection', (socket) => {
   //Listen to custom event from client to server.
   //P.S. adding a callback for event acknowledgement
   socket.on('createMessage', (message, callback) => {
-    console.log('createMessage', message);
-
     //emit this event to ALL connnections
     io.emit('newMessage', generateMessage(message.from, message.text));
 
