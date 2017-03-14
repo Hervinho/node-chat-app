@@ -5,6 +5,7 @@ const publicPath = path.join(__dirname, '../public');
 const socketIO = require('socket.io');
 
 var {generateMessage} = require('./utils/message');
+const {isRealString} = require('./utils/validator');
 
 const PORT = process.env.PORT || 2000;
 
@@ -24,8 +25,17 @@ io.on('connection', (socket) => {
   //emit this event to all connnections in chat room EXCEPT the new user.
   socket.broadcast.emit('newMessage', generateMessage('ADMIN', 'New User joined chat'));
 
-  //Listen to custom event from client to server.
-  //P.S. adding a callback for event acknowledgement
+  //Listen to events from client to server. P.S Adding callbacks for acknowledgement
+
+  //when user joins a room.
+  socket.on('join', (params, callback) => {
+    if(!isRealString(params.name) || !isRealString(params.room)){
+      callback('User and room names required!!!');
+    }
+
+    callback();
+  });
+
   socket.on('createMessage', (message, callback) => {
     //emit this event to ALL connnections
     io.emit('newMessage', generateMessage(message.from, message.text));

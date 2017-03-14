@@ -22,6 +22,18 @@ function scrollDown(){
 //listen to on connect event.
 socket.on('connect', function (){
   console.log('Connected to server.');
+
+  //get user and room names from user
+  var params = $.deparam(window.location.search);
+  socket.emit('join', params, function (error){
+    if(error){
+      alert(error);
+      window.location.href = '/';
+    }
+    else{
+      console.log('No error!!');
+    }
+  });
 });
 
 //listen to on disconnect event.
