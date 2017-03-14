@@ -36,7 +36,20 @@ socket.on('connect', function (){
   });
 });
 
-//listen to on disconnect event.
+// event to update users' list in the UI.
+socket.on('updateUserList', function (userNamesArray){
+  var ul = $('<ul></ul>');
+
+  //Load users'list
+  userNamesArray.forEach(function (user){
+    ul.append($('<li></li>').text(user));
+  });
+
+  //Update UI with users'list
+  $('#users').html(ul);
+});
+
+//listen to disconnect event.
 socket.on('disconnect', function (){
   console.log('Diconnected from server.');
 });
