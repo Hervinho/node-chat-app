@@ -18,12 +18,13 @@ app.use(express.static(publicPath));
 //Register event listener. socket argument comes from index.html in public folder
 io.on('connection', (socket) => {
   console.log('New user connected');
-
-  //This is emitted to a newly connected user.
+  /*
+  //This is ONLY emitted to a newly connected user.
   socket.emit('newMessage', generateMessage('ADMIN', 'Welcome to chat app'));
 
   //emit this event to all connnections in chat room EXCEPT the new user.
   socket.broadcast.emit('newMessage', generateMessage('ADMIN', 'New User joined chat'));
+  */
 
   //Listen to events from client to server. P.S Adding callbacks for acknowledgement
 
@@ -32,6 +33,19 @@ io.on('connection', (socket) => {
     if(!isRealString(params.name) || !isRealString(params.room)){
       callback('User and room names required!!!');
     }
+
+    //join a chat room
+    socket.join(params.room);
+
+    //This is ONLY emitted to a newly connected user.
+    socket.emit('newMessage', generateMessage('ADMIN', `Welcome to chat room ${params.room}`));
+
+    //emit this event to all connnections in chat room EXCEPT the new user.
+    socket.broadcast.to(params.room).emit('newMessage', generateMessage('ADMIN', `${params.name} has joined chat room`));
+
+
+    //leave a chat room
+    //socket.join(params.room);
 
     callback();
   });
