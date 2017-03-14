@@ -60,8 +60,18 @@ io.on('connection', (socket) => {
   });
 
   socket.on('createMessage', (message, callback) => {
+    var userInChatRoom = users.getUser(socket.id);
+
+    //if such user exists and his/her message is valid
+    if(userInChatRoom && isRealString(message.text)){
+      //emit message to ALL users in the chat room
+      io.to(userInChatRoom.room).emit('newMessage', generateMessage(userInChatRoom.name,
+        message.text));
+
+    }
+
     //emit this event to ALL connnections
-    io.emit('newMessage', generateMessage(message.from, message.text));
+    //io.emit('newMessage', generateMessage(message.from, message.text));
 
     //send event acknowledgement
     callback('From server: Message received!!!');

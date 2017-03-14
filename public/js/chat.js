@@ -76,7 +76,6 @@ $('#messageForm').on('submit', function(e){
 
   //emit custom event createMessage. Here user posts in the chat app.
   socket.emit('createMessage', {
-    from: 'Browser',
     text: messageTextBox.val()
   }, function (data){
       messageTextBox.val('');
