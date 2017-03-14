@@ -45,7 +45,7 @@ io.on('connection', (socket) => {
 
 
     //leave a chat room
-    //socket.join(params.room);
+    //socket.leave(params.room);
 
     callback();
   });
