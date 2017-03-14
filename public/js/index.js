@@ -13,10 +13,13 @@ socket.on('disconnect', function (){
 //listen to custom event newMessage.
 socket.on('newMessage', function (message){
   var formattedTime = moment(message.createdAt).format('h:mm a');
-
-  //display incoming messages.
-  var li = $('<li></li>').text(`${message.from} @ ${formattedTime} : ${message.text}`);
-  $('#messages').append(li);
+  var template = $('#messageTemplate').html();
+  var html = Mustache.render(template, {
+    text: message.text,
+    from: message.from,
+    time: formattedTime
+  });
+  $('#messages').append(html);
 });
 
 //Listener for message form.
