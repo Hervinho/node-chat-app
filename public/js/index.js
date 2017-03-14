@@ -1,5 +1,24 @@
 var socket = io();
 
+//Function that will do thee auto scrolling
+function scrollDown(){
+  //selectors
+  var messages = $('#messages');
+  var newMsg = messages.children('li:last-child');//get new message sent.
+
+  //heights
+  var clientHeight = messages.prop('clientHeight');//what is displayed on client screen.
+  var scrollHeight = messages.prop('scrollHeight');// actual height of div of messages.
+  var scrollTop = messages.prop('scrollTop');// scrollHeight - clientHeight
+  var newMsgHeight = newMsg.innerHeight();//get height of new message that arrived.
+  var lastMsgHeight = newMsg.prev().innerHeight();//get height of second to last message.
+
+  //if close to the bottom, then scroll down.
+  if(clientHeight + scrollTop + newMsgHeight + lastMsgHeight >= scrollHeight){
+    messages.scrollTop(scrollHeight);
+  }
+}
+
 //listen to on connect event.
 socket.on('connect', function (){
   console.log('Connected to server.');
@@ -19,7 +38,9 @@ socket.on('newMessage', function (message){
     from: message.from,
     time: formattedTime
   });
+
   $('#messages').append(html);
+  scrollDown();
 });
 
 //Listener for message form.
